@@ -1,0 +1,2 @@
+save the i value so the child knows what pipe it is using
+break from loop after doing that stuff
