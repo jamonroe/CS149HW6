@@ -160,7 +160,7 @@ int main() {
 	    inputfds = inputs;
 
 	    //parent read stuff
-	    int result = select(NUM_PIPES, &inputfds, NULL, NULL, &timeout);
+	    int result = select(FD_SETSIZE, &inputfds, NULL, NULL, NULL);
 	    
 	    switch(result)
 	    {
@@ -182,9 +182,7 @@ int main() {
 			{
 			    if (read(fd[j][READ_END], read_msg, BUFFER_SIZE) > 0)
 			    {
-				ioctl (fd[j][READ_END], FIONREAD, &nread);
 				printf("Message Received from Child %d: %s\n", j, read_msg);
-				fflush(stdout);
 			    }
 			}
 		    }
