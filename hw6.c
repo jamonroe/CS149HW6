@@ -16,10 +16,10 @@
 #define BUFFER_SIZE 300
 #define READ_END     0
 #define WRITE_END    1
-#define SLEEP_DIVISOR 3
+#define SLEEP_DIVISOR 3	// Helps to random 0, 1, or 2
 #define NUM_PIPES 5
-#define RUN_TIME 30
-#define STDIN_CHILD 4
+#define RUN_TIME 10 	// Amount of seconds this program will run
+#define STDIN_CHILD 4	// Child who will read from stdin
 
 fd_set inputs, inputfds;  // Sets of file descriptors
 struct timeval timeout;
@@ -153,6 +153,7 @@ int main() {
 		else
 		{
 		    //printf("Child wrote \"%s\" to pipe\n", write_msg);
+		    printf("Child %d wrote %s\n", pipe_id, write_msg);
 		    write(fd[pipe_id][WRITE_END], write_msg, strlen(write_msg)+1);
 		    sleep(rand()%SLEEP_DIVISOR);
 		}
