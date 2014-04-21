@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 #include <sys/types.h>
+#include <assert.h>
+#include <signal.h>
 #include <sys/time.h>
 #include <sys/ioctl.h>
 #include <stdio.h>
@@ -16,18 +19,36 @@
 
 fd_set inputs, inputfds;  // sets of file descriptors
 struct timeval timeout;
+int timedout = 0;
+int errno;
+
+// The SIGALRM interrupt handler.
+void SIGALRM_handler(int signo)
+{
+    assert(signo == SIGALRM);
+    printf("\nTime's up!\n");
+    timedout = 1;
+}
 
 int main() {
     
     FD_ZERO(&inputs);    // initialize inputs to the empty set
     FD_SET(0, &inputs);  // set file descriptor 0 (stdin)
 
-    char write_msg[BUFFER_SIZE] = "You're my child process!";
+    char write_msg[BUFFER_SIZE] = "I am your child process!";
     char read_msg[BUFFER_SIZE];
     
     pid_t pid;     // child process id
     int fd[5][2];  // file descriptors for the pipe
+    int pipe_id;   // pipe id that child process will use    
+
+    struct itimerval tval;
     
+    timerclear (& tval.it_interval);
+    timerclear (& tval.it_value);
+    tval.it_value.tv_sec = 5; //30 second timeout
+
+
     // Create the pipes.
     int i;
     for(i = 0; i < 5; i++){
@@ -46,24 +67,25 @@ int main() {
 		close(fd[i][WRITE_END]);
 
 		// Read from the READ end of the pipe.
-		read(fd[i][READ_END], read_msg, BUFFER_SIZE);
-		printf("Child: Read '%s' from the pipe.\n", read_msg);
-
-		// Close the READ end of the pipe.
-		close(fd[i][READ_END]);
+		//read(fd[i][READ_END], read_msg, BUFFER_SIZE);
+		//printf("Parent: Read '%s' from the pipe.\n", read_msg);
 	
         } else if (pid == 0) { 
 		
 		// CHILD PROCESS.
 		// Close the unused READ end of the pipe.
 		close(fd[i][READ_END]);
+		
+		// Child saves pipe id to know which pipe to use
+		pipe_id = i;		
 
 		// Write to the WRITE end of the pipe.
-		write(fd[i][WRITE_END], write_msg, strlen(write_msg)+1);
-		printf("Parent: Wrote '%s' to the pipe.\n", write_msg);
+		//write(fd[i][WRITE_END], write_msg, strlen(write_msg)+1);
+		//printf("Child %d: Wrote '%s' to the pipe.\n", pipe_id, write_msg);
 
-		// Close the WRITE end of the pipe.
-		close(fd[i][WRITE_END]);
+		//break out of loop
+		//otherwise, child processes will also fork
+		break;
 
 	} else {
 
@@ -72,6 +94,39 @@ int main() {
 
 	}
     }
+
+    if (pid == 0)
+    {
+        // Bind the timer signal
+        signal(SIGALRM, SIGALRM_handler);
+        // Start the timer
+        tval.it_value.tv_sec = 5; //30 second timeout
+        setitimer(ITIMER_REAL, &tval, NULL);
+
+        printf("Child Process %d timer started.\n", pipe_id);    
+
+        for (;;)
+        {
+            if (timedout)
+                break;
+        }
+    }
+    if (pid == 0)
+    {
+	printf("Child Process %d ended.\n", pipe_id);
+    }
+    else
+    {
+	int status;
+	while (status = waitpid(-1, NULL, 0))
+	    {
+	        if (errno == ECHILD) {break;}
+	    }
+        printf("Parent process ended.\n");
+    }
+
+    //pipe input stuff here
+
     return 0;
 }
 
