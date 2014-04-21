@@ -1,133 +1,142 @@
-0.000000 0.000000 Child 3 Message 0
-0.000000 0.000000 Child 2 Message 0
-0.000000 0.000000 Child 1 Message 0
-0.000000 0.000000 Child 0 Message 0
-1.000000 1.000000 Child 3 Message 2
-1.000000 1.000000 Child 2 Message 2
-1.000000 1.000000 Child 1 Message 1
-1.000000 1.000000 Child 0 Message 1
-2.000000 2.000000 Child 3 Message 6
-2.000000 2.000000 Child 1 Message 2
-2.000000 2.000000 Child 0 Message 2
-3.000000 3.000000 Child 2 Message 3
-3.000000 3.000000 Child 3 Message 8
-3.000000 3.000000 Child 1 Message 4
-3.000000 3.000000 Child 0 Message 4
-3.000000 3.000000 Child 4 Keyboard Message: a
-3.000000 3.000000 Child 4 Keyboard Message: b
-4.000000 4.000000 Child 4 Keyboard Message: c
-4.000000 4.000000 Child 4 Keyboard Message: d
-4.000000 4.000000 Child 3 Message 9
-4.000000 4.000000 Child 4 Keyboard Message: e
-5.000000 5.000000 Child 4 Keyboard Message: f
-5.000000 5.000000 Child 0 Message 5
-5.000000 5.000000 Child 1 Message 5
-5.000000 5.000000 Child 2 Message 4
-5.000000 5.000000 Child 3 Message 10
-6.000000 6.000000 Child 4 Keyboard Message: g
-6.000000 6.000000 Child 0 Message 6
-6.000000 6.000000 Child 1 Message 6
-6.000000 6.000000 Child 2 Message 9
-6.000000 6.000000 Child 3 Message 11
-7.000000 7.000000 Child 4 Keyboard Message: h
-7.000000 7.000000 Child 0 Message 7
-7.000000 7.000000 Child 1 Message 7
-7.000000 7.000000 Child 2 Message 11
-7.000000 7.000000 Child 3 Message 12
-8.000000 8.000000 Child 4 Keyboard Message: i
-8.000000 8.000000 Child 4 Keyboard Message: j
-8.000000 8.000000 Child 0 Message 10
-8.000000 8.000000 Child 1 Message 10
-8.000000 8.000000 Child 3 Message 14
-8.000000 8.000000 Child 4 Keyboard Message: k
-9.000000 9.000000 Child 4 Keyboard Message: l
-9.000000 9.000000 Child 2 Message 14
-9.000000 9.000000 Child 3 Message 15
-9.000000 9.000000 Child 4 Keyboard Message: m
-10.000000 10.000000 Child 0 Message 11
-10.000000 10.000000 Child 1 Message 11
-10.000000 10.000000 Child 3 Message 18
-11.000000 11.000000 Child 4 Keyboard Message: n
-11.000000 11.000000 Child 0 Message 12
-11.000000 11.000000 Child 1 Message 12
-11.000000 11.000000 Child 2 Message 15
-11.000000 11.000000 Child 3 Message 19
-12.000000 12.000000 Child 4 Keyboard Message: o
-12.000000 12.000000 Child 4 Keyboard Message: p
-12.000000 12.000000 Child 3 Message 21
-13.000000 13.000000 Child 4 Keyboard Message: q
-13.000000 13.000000 Child 4 Keyboard Message: r
-13.000000 13.000000 Child 0 Message 13
-13.000000 13.000000 Child 1 Message 13
-13.000000 13.000000 Child 2 Message 17
-13.000000 13.000000 Child 3 Message 23
-13.000000 13.000000 Child 4 Keyboard Message: s
-13.000000 13.000000 Child 4 Keyboard Message: t
-14.000000 14.000000 Child 4 Keyboard Message: u
-14.000000 14.000000 Child 0 Message 14
-14.000000 14.000000 Child 1 Message 14
-14.000000 14.000000 Child 3 Message 25
-15.000000 15.000000 Child 4 Keyboard Message: v
-15.000000 15.000000 Child 2 Message 20
-15.000000 15.000000 Child 4 Keyboard Message: w
-16.000000 16.000000 Child 4 Keyboard Message: x
-16.000000 16.000000 Child 0 Message 15
-16.000000 16.000000 Child 1 Message 15
-16.000000 16.000000 Child 3 Message 26
-17.000000 17.000000 Child 4 Keyboard Message: y
-17.000000 17.000000 Child 0 Message 16
-17.000000 17.000000 Child 1 Message 16
-17.000000 17.000000 Child 2 Message 21
-17.000000 17.000000 Child 4 Keyboard Message: z
-18.000000 18.000000 Child 4 Keyboard Message: a
-18.000000 18.000000 Child 0 Message 19
-18.000000 18.000000 Child 1 Message 19
-18.000000 18.000000 Child 3 Message 27
-18.000000 18.000000 Child 4 Keyboard Message: b
-19.000000 19.000000 Child 4 Keyboard Message: c
-19.000000 19.000000 Child 4 Keyboard Message: d
-19.000000 19.000000 Child 0 Message 20
-19.000000 19.000000 Child 1 Message 20
-19.000000 19.000000 Child 2 Message 22
-19.000000 19.000000 Child 4 Keyboard Message: e
-20.000000 20.000000 Child 4 Keyboard Message: f
-20.000000 20.000000 Child 3 Message 28
-20.000000 20.000000 Child 4 Keyboard Message: g
-21.000000 21.000000 Child 4 Keyboard Message: h
-21.000000 21.000000 Child 0 Message 21
-21.000000 21.000000 Child 1 Message 21
-21.000000 21.000000 Child 2 Message 23
-21.000000 21.000000 Child 3 Message 29
-22.000000 22.000000 Child 4 Keyboard Message: i
-22.000000 22.000000 Child 3 Message 30
-22.000000 22.000000 Child 4 Keyboard Message: j
-23.000000 23.000000 Child 4 Keyboard Message: k
-23.000000 23.000000 Child 0 Message 22
-23.000000 23.000000 Child 1 Message 22
-23.000000 23.000000 Child 2 Message 24
-23.000000 23.000000 Child 3 Message 31
-24.000000 24.000000 Child 4 Keyboard Message: l
-24.000000 24.000000 Child 2 Message 25
-24.000000 24.000000 Child 3 Message 32
-24.000000 24.000000 Child 4 Keyboard Message: m
-25.000000 25.000000 Child 0 Message 25
-25.000000 25.000000 Child 1 Message 25
-25.000000 25.000000 Child 2 Message 26
-25.000000 25.000000 Child 3 Message 33
-25.000000 25.000000 Child 4 Keyboard Message: n
-26.000000 26.000000 Child 4 Keyboard Message: o
-27.000000 27.000000 Child 4 Keyboard Message: p
-27.000000 27.000000 Child 0 Message 26
-27.000000 27.000000 Child 1 Message 26
-27.000000 27.000000 Child 2 Message 27
-27.000000 27.000000 Child 3 Message 34
-28.000000 28.000000 Child 4 Keyboard Message: q
-28.000000 28.000000 Child 4 Keyboard Message: r
-28.000000 28.000000 Child 4 Keyboard Message: s
-29.000000 29.000000 Child 4 Keyboard Message: t
-29.000000 29.000000 Child 0 Message 27
-29.000000 29.000000 Child 1 Message 27
-29.000000 29.000000 Child 2 Message 28
-29.000000 29.000000 Child 3 Message 35
-29.000000 29.000000 Child 4 Keyboard Message: u
-30.000000 30.000000 Child 4 Keyboard Message: v
+0.000988 0.000827 Child 3 Message 0
+0.001493 0.001357 Child 2 Message 0
+0.001738 0.001609 Child 1 Message 0
+0.001964 0.001876 Child 0 Message 0
+1.001389 1.001223 Child 3 Message 2
+1.001669 1.001609 Child 2 Message 2
+1.001956 1.001898 Child 1 Message 1
+1.002180 1.002123 Child 0 Message 1
+2.001701 2.001591 Child 3 Message 6
+2.002213 2.002088 Child 1 Message 2
+2.005426 2.005003 Child 0 Message 2
+3.001982 3.001850 Child 2 Message 3
+3.001993 3.001937 Child 3 Message 8
+3.002388 3.002328 Child 1 Message 4
+3.006395 3.006339 Child 0 Message 4
+3.566447 3.566291 Child 4 Keyboard Message: a
+3.838321 3.838228 Child 4 Keyboard Message: b
+4.002301 4.002204 Child 3 Message 9
+4.134365 4.134272 Child 4 Keyboard Message: c
+4.438353 4.438257 Child 4 Keyboard Message: d
+4.734358 4.734264 Child 4 Keyboard Message: e
+5.002232 5.002114 Child 2 Message 4
+5.002592 5.002554 Child 1 Message 5
+5.002598 5.002492 Child 3 Message 10
+5.006384 5.006288 Child 4 Keyboard Message: f
+5.006607 5.006540 Child 0 Message 5
+5.898330 5.898268 Child 4 Keyboard Message: g
+6.003567 6.003525 Child 1 Message 6
+6.003624 6.003409 Child 2 Message 9
+6.003627 6.003506 Child 3 Message 11
+6.008802 6.006802 Child 0 Message 6
+6.358334 6.358266 Child 4 Keyboard Message: h
+6.683376 6.683311 Child 4 Keyboard Message: i
+7.003874 7.003823 Child 1 Message 7
+7.003885 7.003702 Child 2 Message 11
+7.003889 7.003798 Child 3 Message 12
+7.007915 7.007670 Child 0 Message 7
+7.150383 7.150319 Child 4 Keyboard Message: j
+7.594355 7.594291 Child 4 Keyboard Message: k
+8.004146 8.004110 Child 1 Message 10
+8.004160 8.004042 Child 3 Message 14
+8.008114 8.008058 Child 0 Message 10
+8.070341 8.070266 Child 4 Keyboard Message: l
+8.654290 8.654228 Child 4 Keyboard Message: m
+9.004064 9.003984 Child 2 Message 14
+9.004348 9.004258 Child 3 Message 15
+9.193389 9.193329 Child 4 Keyboard Message: n
+9.807220 9.807158 Child 4 Keyboard Message: o
+10.004423 10.004355 Child 1 Message 11
+10.004632 10.004599 Child 3 Message 18
+10.008370 10.008319 Child 0 Message 11
+10.442305 10.442237 Child 4 Keyboard Message: p
+10.990296 10.990229 Child 4 Keyboard Message: q
+11.004352 11.004276 Child 2 Message 15
+11.004582 11.004549 Child 1 Message 12
+11.004742 11.004704 Child 3 Message 19
+11.008572 11.008528 Child 0 Message 12
+11.294353 11.294285 Child 4 Keyboard Message: r
+11.546341 11.546277 Child 4 Keyboard Message: s
+11.814473 11.814408 Child 4 Keyboard Message: t
+12.005059 12.004983 Child 3 Message 21
+12.151222 12.151106 Child 4 Keyboard Message: u
+12.611452 12.611368 Child 4 Keyboard Message: v
+13.004636 13.004554 Child 2 Message 17
+13.004859 13.004825 Child 1 Message 13
+13.005269 13.005228 Child 3 Message 23
+13.008830 13.008779 Child 0 Message 13
+13.086450 13.086385 Child 4 Keyboard Message: w
+13.671607 13.671519 Child 4 Keyboard Message: x
+14.005145 14.005077 Child 1 Message 14
+14.005494 14.005417 Child 3 Message 25
+14.011193 14.011076 Child 0 Message 14
+14.167286 14.167221 Child 4 Keyboard Message: y
+14.730285 14.730217 Child 4 Keyboard Message: z
+15.004974 15.004905 Child 2 Message 20
+15.526493 15.526340 Child 4 Keyboard Message: a
+15.822319 15.822252 Child 4 Keyboard Message: b
+16.005424 16.005354 Child 1 Message 15
+16.005726 16.005650 Child 3 Message 26
+16.011423 16.011372 Child 0 Message 15
+16.178329 16.178219 Child 4 Keyboard Message: c
+16.478355 16.478287 Child 4 Keyboard Message: d
+16.779486 16.779413 Child 4 Keyboard Message: e
+17.005287 17.005213 Child 2 Message 21
+17.005644 17.005594 Child 1 Message 16
+17.011703 17.011639 Child 0 Message 16
+17.039288 17.039225 Child 4 Keyboard Message: f
+17.402328 17.402262 Child 4 Keyboard Message: g
+17.946360 17.946289 Child 4 Keyboard Message: h
+18.006021 18.005924 Child 1 Message 19
+18.006035 18.005987 Child 3 Message 27
+18.013960 18.013859 Child 0 Message 19
+18.347368 18.347303 Child 4 Keyboard Message: i
+18.787333 18.787268 Child 4 Keyboard Message: j
+19.005550 19.005480 Child 2 Message 22
+19.006161 19.006126 Child 1 Message 20
+19.014227 19.014174 Child 0 Message 20
+19.310478 19.310349 Child 4 Keyboard Message: k
+20.006310 20.006241 Child 3 Message 28
+21.008566 21.008501 Child 1 Message 21
+21.008694 21.008444 Child 2 Message 23
+21.008717 21.008532 Child 3 Message 29
+21.014454 21.014402 Child 0 Message 21
+21.046358 21.046289 Child 4 Keyboard Message: l
+21.661432 21.661360 Child 4 Keyboard Message: m
+22.008844 22.008778 Child 3 Message 30
+22.382341 22.382278 Child 4 Keyboard Message: n
+22.866381 22.866310 Child 4 Keyboard Message: o
+23.008865 23.008778 Child 1 Message 22
+23.009052 23.009026 Child 2 Message 24
+23.009060 23.008995 Child 3 Message 31
+23.015747 23.015680 Child 0 Message 22
+23.518362 23.518293 Child 4 Keyboard Message: p
+24.009319 24.009287 Child 2 Message 25
+24.009333 24.009226 Child 3 Message 32
+24.227278 24.227125 Child 4 Keyboard Message: q
+24.746330 24.746264 Child 4 Keyboard Message: r
+25.007439 25.007368 Child 4 Keyboard Message: s
+25.009098 25.009045 Child 1 Message 25
+25.009693 25.009670 Child 2 Message 26
+25.009703 25.009634 Child 3 Message 33
+25.016026 25.015957 Child 0 Message 25
+25.231655 25.231417 Child 4 Keyboard Message: t
+25.662359 25.662291 Child 4 Keyboard Message: u
+26.034340 26.034237 Child 4 Keyboard Message: v
+26.534393 26.534279 Child 4 Keyboard Message: w
+27.009367 27.009296 Child 1 Message 26
+27.009876 27.009853 Child 2 Message 27
+27.009886 27.009823 Child 3 Message 34
+27.016287 27.016235 Child 0 Message 26
+27.347443 27.347338 Child 4 Keyboard Message: x
+27.702284 27.702217 Child 4 Keyboard Message: y
+27.922318 27.922258 Child 4 Keyboard Message: z
+28.611580 28.611490 Child 4 Keyboard Message: a
+28.854307 28.854242 Child 4 Keyboard Message: b
+29.010891 29.010675 Child 1 Message 27
+29.010902 29.010817 Child 2 Message 28
+29.010908 29.010792 Child 3 Message 35
+29.016573 29.016516 Child 0 Message 27
+29.114300 29.114235 Child 4 Keyboard Message: c
+29.558350 29.558285 Child 4 Keyboard Message: d
+29.803370 29.803246 Child 4 Keyboard Message: e

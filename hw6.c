@@ -23,7 +23,7 @@
 fd_set inputs, inputfds;  // sets of file descriptors
 struct timeval timeout;
 int timedout = 0;
-int errno, result, nread;
+int errno, result;
 int fd[5][2];  // file descriptors for the pipe
 char write_msg[BUFFER_SIZE];
 char read_msg[BUFFER_SIZE];
@@ -39,7 +39,7 @@ void SIGALRM_handler(int signo)
 
 float timeDiff(struct timeval startTime, struct timeval endTime)
 {
-    float f = (float)((endTime.tv_sec - startTime.tv_sec) + ((endTime.tv_usec - startTime.tv_usec)/1000000L));
+    float f = (float)((endTime.tv_sec - startTime.tv_sec) + ((float)(endTime.tv_usec - startTime.tv_usec)/1000000L));
     return f;
 }
 
@@ -121,7 +121,7 @@ int main() {
 
     if (pid == 0)
     {
-
+	// Child processes writing to pipes
         for (;;)
         { 
 	    if (pipe_id == 4)
@@ -136,7 +136,6 @@ int main() {
 		else
 		{
 		    msgToWrite(pipe_id, -1, timediff, temp_msg);
-
 		    write(fd[pipe_id][WRITE_END], write_msg, strlen(write_msg)+1);
 		}
 	    }
@@ -149,7 +148,7 @@ int main() {
 		if (timediff > RUN_TIME) {}
 		else
 		{
-		    printf("Child wrote \"%s\" to pipe\n", write_msg);
+		    //printf("Child wrote \"%s\" to pipe\n", write_msg);
 		    write(fd[pipe_id][WRITE_END], write_msg, strlen(write_msg)+1);
 		    sleep(rand()%SLEEP_DIVISOR);
 		}
@@ -160,6 +159,7 @@ int main() {
 ///*
     else
     {
+	// Parent reading from pipes
 	FD_ZERO(&inputs);
 	int j;
 	for (j = 0; j < NUM_PIPES; j++) // Setting the readends to the inputs
@@ -202,8 +202,8 @@ int main() {
 			{
 			    if (read(fd[j][READ_END], read_msg, BUFFER_SIZE+1) > 0)
 			    {
-				printf ("Parent read \"%s\" from pipe\n", read_msg);
-				fflush (stdout);
+				//printf ("Parent read \"%s\" from pipe\n", read_msg);
+				//fflush (stdout);
 				
 				gettimeofday(&currTime, NULL);
 				timediff = timeDiff(startTime, currTime);
