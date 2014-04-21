@@ -3,51 +3,63 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-#include <sys/types.h>
 #include <assert.h>
 #include <signal.h>
-#include <sys/time.h>
-#include <sys/ioctl.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/ioctl.h>
 
-#define BUFFER_SIZE 32
+#define BUFFER_SIZE 64
 #define READ_END     0
 #define WRITE_END    1
+#define SLEEP_DIVISOR 3
+#define NUM_PIPES 5
+#define RUN_TIME 5
 
 fd_set inputs, inputfds;  // sets of file descriptors
 struct timeval timeout;
 int timedout = 0;
-int errno;
+int errno, result, nread;
+int fd[5][2];  // file descriptors for the pipe
+char write_msg[BUFFER_SIZE] = "Hi!";
+char read_msg[BUFFER_SIZE];
+char temp_msg[BUFFER_SIZE];
+
 
 // The SIGALRM interrupt handler.
 void SIGALRM_handler(int signo)
 {
     assert(signo == SIGALRM);
-    printf("\nTime's up!\n");
+    //printf("Time's up!\n");
     timedout = 1;
 }
 
-int main() {
-    
-    FD_ZERO(&inputs);    // initialize inputs to the empty set
-    FD_SET(0, &inputs);  // set file descriptor 0 (stdin)
+void msgToWrite(int pipe_id, int msg_num)
+{
+    int temp;
+    //temp = sprintf(write_msg, "Message %d", msg_num);
 
-    char write_msg[BUFFER_SIZE] = "I am your child process!";
-    char read_msg[BUFFER_SIZE];
-    
+}
+
+int main() {
+
     pid_t pid;     // child process id
-    int fd[5][2];  // file descriptors for the pipe
-    int pipe_id;   // pipe id that child process will use    
+    int pipe_id;   // pipe id that child process will use
+    int msg_count = 0; // number of messages sent
+
+    double timediff = 0;
 
     struct itimerval tval;
     
     timerclear (& tval.it_interval);
     timerclear (& tval.it_value);
-    tval.it_value.tv_sec = 5; //30 second timeout
-
+    tval.it_value.tv_sec = RUN_TIME; //30 second timeout
+    // Bind the timer signal
+    signal(SIGALRM, SIGALRM_handler);
 
     // Create the pipes.
     int i;
@@ -78,10 +90,9 @@ int main() {
 		
 		// Child saves pipe id to know which pipe to use
 		pipe_id = i;		
-
+		srand(pipe_id);
 		// Write to the WRITE end of the pipe.
 		//write(fd[i][WRITE_END], write_msg, strlen(write_msg)+1);
-		//printf("Child %d: Wrote '%s' to the pipe.\n", pipe_id, write_msg);
 
 		//break out of loop
 		//otherwise, child processes will also fork
@@ -97,20 +108,92 @@ int main() {
 
     if (pid == 0)
     {
-        // Bind the timer signal
-        signal(SIGALRM, SIGALRM_handler);
         // Start the timer
-        tval.it_value.tv_sec = 5; //30 second timeout
         setitimer(ITIMER_REAL, &tval, NULL);
 
-        printf("Child Process %d timer started.\n", pipe_id);    
+        //printf("Child Process %d timer started.\n", pipe_id);    
 
         for (;;)
         {
-            if (timedout)
-                break;
+	    if (pipe_id == 4)
+	    {
+		printf("Enter keyboard input.\n");
+		scanf("%s", write_msg);
+		
+		if (timediff >= RUN_TIME) {}
+		else
+		{
+		    write(fd[pipe_id][WRITE_END], write_msg, strlen(write_msg)+1);
+		}
+	    }
+	    else
+	    {
+		//msgToWrite(pipe_id, msg_count);
+		msg_count++;
+		if (timediff >= RUN_TIME) {break;}
+		else
+		{
+		    write(fd[pipe_id][WRITE_END], write_msg, strlen(write_msg)+1);
+		    sleep(rand()%SLEEP_DIVISOR);
+		}
+	    }
+            if (timedout) break;
         }
     }
+///*
+    else
+    {
+	FD_ZERO(&inputs);
+	int j;
+	for (j = 0; j < NUM_PIPES; j++) // Setting the readends to the inputs
+	{
+	    FD_SET(fd[j][READ_END], &inputs);
+	}
+
+	timeout.tv_sec = 1; // 0.5 second timeout
+	timeout.tv_usec = 500000;
+
+	for(;;)
+	{
+	    // If all children are done, break out of loop
+	    if (waitpid(-1, NULL, WNOHANG) == -1) break;
+	    inputfds = inputs;
+
+	    //parent read stuff
+	    int result = select(NUM_PIPES, &inputfds, NULL, NULL, &timeout);
+	    
+	    switch(result)
+	    {
+		case 0:
+		{
+		    // No input
+		    break;
+		}
+		case -1:
+		{
+		    perror("select");
+		    exit(1);
+		}
+		default:
+		{
+		    for (j = 0; j < NUM_PIPES; j++)
+		    {
+			if (FD_ISSET(fd[j][READ_END], &inputfds))
+			{
+			    if (read(fd[j][READ_END], read_msg, BUFFER_SIZE) > 0)
+			    {
+				ioctl (fd[j][READ_END], FIONREAD, &nread);
+				printf("Message Received from Child %d: %s\n", j, read_msg);
+				fflush(stdout);
+			    }
+			}
+		    }
+		}
+	    }
+	}
+    }
+//*/
+
     if (pid == 0)
     {
 	printf("Child Process %d ended.\n", pipe_id);
@@ -124,67 +207,10 @@ int main() {
 	    }
         printf("Parent process ended.\n");
     }
-
-    //pipe input stuff here
-
     return 0;
 }
 
-void parent()
-{
-    char buffer[128];
-    int result, nread;
 
-    
-    //  Wait for input on stdin for a maximum of 2.5 seconds.    
-    for (;;)  {
-        inputfds = inputs;
-        
-        // 2.5 seconds.
-        timeout.tv_sec = 2;
-        timeout.tv_usec = 500000;
 
-        // Get select() results.
-        result = select(FD_SETSIZE, &inputfds, 
-                        (fd_set *) 0, (fd_set *) 0, &timeout);
-
-        // Check the results.
-        //   No input:  the program loops again.
-        //   Got input: print what was typed, then terminate.
-        //   Error:     terminate.
-        switch(result) {
-            case 0: {
-                printf("@");
-                fflush(stdout);
-                break;
-            }
-            
-            case -1: {
-                perror("select");
-                exit(1);
-            }
-
-            // If, during the wait, we have some action on the file descriptor,
-            // we read the input on stdin and echo it whenever an 
-            // <end of line> character is received, until that input is Ctrl-D.
-            default: {
-                if (FD_ISSET(0, &inputfds)) {
-                    ioctl(0,FIONREAD,&nread);
-                    
-                    if (nread == 0) {
-                        printf("Keyboard input done.\n");
-                        exit(0);
-                    }
-                    
-                    nread = read(0,buffer,nread);
-                    buffer[nread] = 0;
-                    printf("Read %d characters from the keyboard: %s", 
-                           nread, buffer);
-                }
-                break;
-            }
-        }
-    }
-}
 
 
