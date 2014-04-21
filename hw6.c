@@ -19,6 +19,7 @@
 #define SLEEP_DIVISOR 3
 #define NUM_PIPES 5
 #define RUN_TIME 30
+#define STDIN_CHILD 4
 
 fd_set inputs, inputfds;  // sets of file descriptors
 struct timeval timeout;
@@ -101,9 +102,10 @@ int main() {
 		
 		// Child saves pipe id to know which pipe to use
 		pipe_id = i;	
+
 		// Each child has their own seed for rand() calls	
-		srand(pipe_id); 
-		
+		srand(pipe_id + 10); 
+
       		// Start the timer
       		setitimer(ITIMER_REAL, &tval, NULL);  
 
@@ -124,10 +126,11 @@ int main() {
 	// Child processes writing to pipes
         for (;;)
         { 
-	    if (pipe_id == 4)
+	    if (pipe_id == STDIN_CHILD) // Child that reads from stdin only
 	    {
+		// Read from keyboard, write out to pipe
 		printf("Enter keyboard input.\n");
-		scanf("%s", temp_msg);
+		fgets(temp_msg, BUFFER_SIZE, stdin);
 
 		gettimeofday(&currTime, NULL);
 		timediff = timeDiff(startTime, currTime);		
@@ -139,7 +142,7 @@ int main() {
 		    write(fd[pipe_id][WRITE_END], write_msg, strlen(write_msg)+1);
 		}
 	    }
-	    else
+	    else // All other child processes
 	    {
 	        gettimeofday(&currTime, NULL);
 	        timediff = timeDiff(startTime, currTime);
@@ -156,13 +159,13 @@ int main() {
             if (timedout) break;
         }
     }
-///*
+
     else
     {
 	// Parent reading from pipes
 	FD_ZERO(&inputs);
 	int j;
-	for (j = 0; j < NUM_PIPES; j++) // Setting the readends to the inputs
+	for (j = 0; j < NUM_PIPES; j++) // Setting the readends to the inputs fd_set
 	{
 	    FD_SET(fd[j][READ_END], &inputs);
 	}
@@ -177,11 +180,13 @@ int main() {
 	{
 	    // If all children are done, break out of loop
 	    if (waitpid(-1, NULL, WNOHANG) == -1) break;
-	    inputfds = inputs;
-
-	    //parent read stuff
+	    inputfds = inputs;	// Reset inputfds to inputs because select changes inputfds
 	    int result = select(FD_SETSIZE, &inputfds, NULL, NULL, NULL);
 	    
+	    // Switch statement
+	    // No input: Loop again
+	    // -1: Error
+	    // Other results: read from pipes and print them out to file
 	    switch(result)
 	    {
 		case 0:
@@ -196,18 +201,26 @@ int main() {
 		}
 		default:
 		{
+		    // Loop through the pipes to find information to read
 		    for (j = 0; j < NUM_PIPES; j++)
 		    {
 			if (FD_ISSET(fd[j][READ_END], &inputfds))
 			{
 			    if (read(fd[j][READ_END], read_msg, BUFFER_SIZE+1) > 0)
 			    {
-				//printf ("Parent read \"%s\" from pipe\n", read_msg);
-				//fflush (stdout);
-				
 				gettimeofday(&currTime, NULL);
 				timediff = timeDiff(startTime, currTime);
-				fprintf(output, "%.03f %s\n", timediff, read_msg);
+				// Following if statement is only for cleaner output purposes
+				if (j == STDIN_CHILD) // Only for child reading from stdin
+				{
+				    // Reading from stdin gives an extra \n character
+				    // Does not add \n when outputting to file
+				    fprintf(output, "%.03f %s", timediff, read_msg);
+				}
+				else // Add the \n character for all other child processes
+				{
+				    fprintf(output, "%.03f %s\n", timediff, read_msg);
+				}
 			    }
 			}
 		    }
@@ -216,8 +229,9 @@ int main() {
 	} // End of for loop
 	fclose(output);
     }
-//*/
 
+/*
+    // Debugging code to make sure processes finished their execution
     if (pid == 0)
     {
 	printf("Child Process %d ended.\n", pipe_id);
@@ -231,6 +245,7 @@ int main() {
 	    }
         printf("Parent process ended.\n");
     }
+*/
     return 0;
 }
 
