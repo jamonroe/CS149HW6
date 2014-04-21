@@ -21,11 +21,11 @@
 #define RUN_TIME 30
 #define STDIN_CHILD 4
 
-fd_set inputs, inputfds;  // sets of file descriptors
+fd_set inputs, inputfds;  // Sets of file descriptors
 struct timeval timeout;
 int timedout = 0;
-int errno, result;
-int fd[5][2];  // file descriptors for the pipe
+int errno, result; // Error detectting purposes
+int fd[5][2];  // File descriptors for the pipe
 char write_msg[BUFFER_SIZE];
 char read_msg[BUFFER_SIZE];
 char temp_msg[BUFFER_SIZE];
@@ -38,19 +38,22 @@ void SIGALRM_handler(int signo)
     timedout = 1;
 }
 
+// Calculates the time difference between the given timeval structs
+// Returns the result as a float
 float timeDiff(struct timeval startTime, struct timeval endTime)
 {
     float f = (float)((endTime.tv_sec - startTime.tv_sec) + ((float)(endTime.tv_usec - startTime.tv_usec)/1000000L));
     return f;
 }
 
+// Writes stuff onto write_msg based on the information passed in
 void msgToWrite(int pipe_id, int msg_num, float time, char* msg)
 {
-    if (msg_num < 0)
+    if (msg_num < 0) // This is for stdin inputs
     {
 	sprintf(write_msg, "%.03f Child %d Keyboard Message: %s", time, pipe_id, msg);
     }
-    else
+    else // This is for all other inputs
     {    
 	sprintf(write_msg, "%.03f Child %d Message %d", time, pipe_id, msg_num);
     }
@@ -58,20 +61,18 @@ void msgToWrite(int pipe_id, int msg_num, float time, char* msg)
 
 int main() {
 
-    pid_t pid;     // child process id
-    int pipe_id;   // pipe id that child process will use
-    int msg_count = 0; // number of messages sent
-
-    float timediff = 0;
-
-    struct itimerval tval;
-    
+    pid_t pid;     // Child process id
+    int pipe_id;   // Pipe id that child process will use
+    int msg_count = 0; // Number of messages sent
+    float timediff = 0; // Storing result from timeDiff call
+    struct itimerval tval; // Timer for the whole program
     struct timeval startTime;
     struct timeval currTime;
 
     timerclear (& tval.it_interval);
     timerclear (& tval.it_value);
     tval.it_value.tv_sec = RUN_TIME; //30 second timeout
+
     // Bind the timer signal
     signal(SIGALRM, SIGALRM_handler);
 
@@ -104,7 +105,7 @@ int main() {
 		pipe_id = i;	
 
 		// Each child has their own seed for rand() calls	
-		srand(pipe_id + 10); 
+		srand(pipe_id + 2); 
 
       		// Start the timer
       		setitimer(ITIMER_REAL, &tval, NULL);  
