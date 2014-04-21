@@ -47,11 +47,11 @@ void msgToWrite(int pipe_id, int msg_num, float time, char* msg)
 {
     if (msg_num < 0)
     {
-	sprintf(write_msg, "%3f Child %d Keyboard Message: %s", time, pipe_id, msg);
+	sprintf(write_msg, "%.03f Child %d Keyboard Message: %s", time, pipe_id, msg);
     }
     else
     {    
-	sprintf(write_msg, "%3f Child %d Message %d", time, pipe_id, msg_num);
+	sprintf(write_msg, "%.03f Child %d Message %d", time, pipe_id, msg_num);
     }
 }
 
@@ -207,7 +207,7 @@ int main() {
 				
 				gettimeofday(&currTime, NULL);
 				timediff = timeDiff(startTime, currTime);
-				fprintf(output, "%f %s\n", timediff, read_msg);
+				fprintf(output, "%.03f %s\n", timediff, read_msg);
 			    }
 			}
 		    }
