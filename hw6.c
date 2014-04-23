@@ -1,24 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <unistd.h>
-#include <errno.h>
 #include <assert.h>
 #include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/time.h>
-#include <sys/ioctl.h>
 
-#define BUFFER_SIZE 300
+#define BUFFER_SIZE 150
 #define READ_END     0
 #define WRITE_END    1
 #define SLEEP_DIVISOR 3	// Helps to random 0, 1, or 2
 #define NUM_PIPES 5
-#define RUN_TIME 10 	// Amount of seconds this program will run
+#define RUN_TIME 30 	// Amount of seconds this program will run
 #define STDIN_CHILD 4	// Child who will read from stdin
 
 fd_set inputs, inputfds;  // Sets of file descriptors
@@ -36,6 +31,7 @@ void SIGALRM_handler(int signo)
 {
     assert(signo == SIGALRM);
     timedout = 1;
+    exit(0);
 }
 
 // Calculates the time difference between the given timeval structs
@@ -51,11 +47,11 @@ void msgToWrite(int pipe_id, int msg_num, float time, char* msg)
 {
     if (msg_num < 0) // This is for stdin inputs
     {
-	sprintf(write_msg, "%.03f Child %d Keyboard Message: %s", time, pipe_id, msg);
+	snprintf(write_msg, BUFFER_SIZE, "%.3f Child %d Keyboard Message: %s", time, pipe_id, msg);
     }
     else // This is for all other inputs
     {    
-	sprintf(write_msg, "%.03f Child %d Message %d", time, pipe_id, msg_num);
+	snprintf(write_msg, BUFFER_SIZE, "%.3f Child %d Message %d", time, pipe_id, msg_num);
     }
 }
 
@@ -63,7 +59,7 @@ int main() {
 
     pid_t pid;     // Child process id
     int pipe_id;   // Pipe id that child process will use
-    int msg_count = 0; // Number of messages sent
+    int msg_count = 1; // Number of messages sent
     float timediff = 0; // Storing result from timeDiff call
     struct itimerval tval; // Timer for the whole program
     struct timeval startTime;
@@ -80,7 +76,7 @@ int main() {
 
     // Create the pipes.
     int i;
-    for(i = 0; i < 5; i++){
+    for(i = 0; i < NUM_PIPES; i++){
 
 	if (pipe(fd[i]) == -1) {
             fprintf(stderr,"pipe() failed");
@@ -140,7 +136,7 @@ int main() {
 		else
 		{
 		    msgToWrite(pipe_id, -1, timediff, temp_msg);
-		    write(fd[pipe_id][WRITE_END], write_msg, strlen(write_msg)+1);
+		    write(fd[pipe_id][WRITE_END], write_msg, BUFFER_SIZE);
 		}
 	    }
 	    else // All other child processes
@@ -153,8 +149,8 @@ int main() {
 		else
 		{
 		    //printf("Child wrote \"%s\" to pipe\n", write_msg);
-		    printf("Child %d wrote %s\n", pipe_id, write_msg);
-		    write(fd[pipe_id][WRITE_END], write_msg, strlen(write_msg)+1);
+		    //printf("Child %d wrote %s\n", pipe_id, write_msg);
+		    write(fd[pipe_id][WRITE_END], write_msg, BUFFER_SIZE);
 		    sleep(rand()%SLEEP_DIVISOR);
 		}
 	    }
@@ -208,7 +204,7 @@ int main() {
 		    {
 			if (FD_ISSET(fd[j][READ_END], &inputfds))
 			{
-			    if (read(fd[j][READ_END], read_msg, BUFFER_SIZE+1) > 0)
+			    if (read(fd[j][READ_END], read_msg, BUFFER_SIZE) > 0)
 			    {
 				gettimeofday(&currTime, NULL);
 				timediff = timeDiff(startTime, currTime);
@@ -217,11 +213,11 @@ int main() {
 				{
 				    // Reading from stdin gives an extra \n character
 				    // Does not add \n when outputting to file
-				    fprintf(output, "%.03f %s", timediff, read_msg);
+				    fprintf(output, "%.3f %s", timediff, read_msg);
 				}
 				else // Add the \n character for all other child processes
 				{
-				    fprintf(output, "%.03f %s\n", timediff, read_msg);
+				    fprintf(output, "%.3f %s\n", timediff, read_msg);
 				}
 			    }
 			}
@@ -231,23 +227,6 @@ int main() {
 	} // End of for loop
 	fclose(output);
     }
-
-/*
-    // Debugging code to make sure processes finished their execution
-    if (pid == 0)
-    {
-	printf("Child Process %d ended.\n", pipe_id);
-    }
-    else
-    {
-	int status;
-	while (status = waitpid(-1, NULL, 0))
-	    {
-	        if (errno == ECHILD) {break;}
-	    }
-        printf("Parent process ended.\n");
-    }
-*/
     return 0;
 }
 
