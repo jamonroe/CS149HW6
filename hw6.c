@@ -86,13 +86,11 @@ int main() {
 	// Fork a child process.
         pid = fork();
         if (pid > 0) {  
-
 		// PARENT PROCESS.
 		// Close the unused WRITE end of the pipe.
 		close(fd[i][WRITE_END]);
 
         } else if (pid == 0) { 
-		
 		// CHILD PROCESS.
 		// Close the unused READ end of the pipe.
 		close(fd[i][READ_END]);
@@ -127,7 +125,7 @@ int main() {
 	    {
 		// Read from keyboard, write out to pipe
 		printf("Enter keyboard input.\n");
-		fgets(temp_msg, BUFFER_SIZE, stdin);
+		fgets(temp_msg, BUFFER_SIZE, stdin); // Reads from console into temp_msg
 
 		gettimeofday(&currTime, NULL);
 		timediff = timeDiff(startTime, currTime);		
@@ -136,6 +134,7 @@ int main() {
 		else
 		{
 		    msgToWrite(pipe_id, -1, timediff, temp_msg);
+		    //printf("Child %d wrote %s\n", pipe_id, write_msg);
 		    write(fd[pipe_id][WRITE_END], write_msg, BUFFER_SIZE);
 		}
 	    }
@@ -148,7 +147,6 @@ int main() {
 		if (timediff > RUN_TIME) {}
 		else
 		{
-		    //printf("Child wrote \"%s\" to pipe\n", write_msg);
 		    //printf("Child %d wrote %s\n", pipe_id, write_msg);
 		    write(fd[pipe_id][WRITE_END], write_msg, BUFFER_SIZE);
 		    sleep(rand()%SLEEP_DIVISOR);
@@ -161,7 +159,7 @@ int main() {
     else
     {
 	// Parent reading from pipes
-	FD_ZERO(&inputs);
+	FD_ZERO(&inputs); // Zeroing out the inputs
 	int j;
 	for (j = 0; j < NUM_PIPES; j++) // Setting the readends to the inputs fd_set
 	{
